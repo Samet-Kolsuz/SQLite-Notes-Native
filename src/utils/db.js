@@ -119,16 +119,29 @@ export const LoginFromDb = async (email, password) => {
 
 // not foksiyonlari
 
-
+// not olusturma
 export const insertNoteDb = ({userid,title,description}) =>{
   return new Promise ((resolve,reject)=>{
 
-
     db.transaction(tx=>{
       tx.executeSql(
-        "INSERT OR REPLACE INTO Notes (userid, title, description) VALUES (?,?,?)", [userid, title, description],
-        (_,results) => {
-          resolve({success:true,message:"Not başarıyla eklendi",id:results.insertId});
+        "INSERT INTO Notes (userid, title, description) VALUES (?,?,?)", 
+        [userid, title, description],
+        (tx,results) => {
+          tx.executeSql(
+            "SELECT * FROM Notes WHERE id = ?",
+            [results.insertId],
+            (_,selectResults) => {
+              resolve({
+                success:true,
+                message:"Not başarıyla eklendi",
+                note:selectResults.rows.item(0)
+              });
+            },
+            (_,selectError) => {
+              reject({success:false,message:selectError.message || "Not alınırken hata oluştu"});
+            }
+          );
         },
         (_,error) => {
           reject({success:false,message:error.message || "Not eklenirken hata oluştu"});
@@ -136,4 +149,109 @@ export const insertNoteDb = ({userid,title,description}) =>{
       )
     })
   })
+}
+
+
+
+// butun notlari alma
+
+export const getAllNotesFromDb = ({ userid }) => {
+    return new Promise((resolve, reject) => {
+
+        db.transaction(tx =>
+
+            tx.executeSql(
+                'SELECT * FROM Notes WHERE userid = ?',
+                [userid],
+                (_, results) => {
+                    const len = results.rows.length;
+                    const notes = [];
+                    for (let i = 0; i < len; i++) {
+                        notes.push(results.rows.item(i));
+                    }
+
+                    resolve(notes);
+                },
+
+                (_, error) => {
+                    reject(error);
+                }
+            )
+
+        )
+    })
+}
+
+// not silme
+
+
+export const deleteNoteFromDb = async (noteId) => {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        "DELETE FROM Notes WHERE id = ?",
+        [noteId],
+        (_, results) => {
+          if (results.rowsAffected > 0) {
+            resolve({ success: true, message: "Not başarıyla silindi" });
+          } else {
+            reject({ success: false, message: "Not bulunamadı" });
+          }
+        },
+        (_, error) => {
+          reject({ success: false, message: error.message || "Not silinirken hata oluştu" });
+        }
+      );
+    });
+  });
+};
+
+// var olan notu guncelleme
+export const updateNoteFromDb = async ({ noteId, title, description, userid }) => {
+
+    console.log("db güncelleme fonksiyonu çalıştı")
+
+    return new Promise((resolve, reject) => {
+
+        db.transaction(tx =>
+            tx.executeSql(
+                'UPDATE Notes SET title = ?, description = ? WHERE id = ?;',
+                [title, description, noteId],
+                (tx, result) => {
+                    // güncelleme işlemi başarılıysa bütün notları SQL kullanarak tekrardan alalım ve cevap olarak gönderelim
+                    tx.executeSql(
+                        'SELECT * FROM Notes WHERE userid = ?',
+                        [userid],
+                        (_, results) => {
+                            const len = results.rows.length;
+                            const notes = [];
+                            for (let i = 0; i < len; i++) {
+                                notes.push(results.rows.item(i));
+                            }
+
+                            resolve({
+                                success: true,
+                                message: "Not başarıyla güncellendi.",
+                                data: notes
+                            });
+                        },
+
+                        (_, error) => {
+                            reject(error);
+                        }
+                    )
+                },
+
+                (_, error) => {
+                    console.error('Error', error);
+                    reject({
+                        success: false,
+                        message: "Not güncellenirken hata oluştu."
+                    })
+                }
+            )
+        )
+
+    })
+
 }

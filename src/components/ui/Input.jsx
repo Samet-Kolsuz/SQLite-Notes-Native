@@ -9,17 +9,17 @@ const Input = (props) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.label}>{label}</Text>
+            <Text style={[styles.label, props.labelstyle ]}>{label}</Text>
             <TextInput 
             {...props}
-            style={[styles.input,
+            style={[styles.input, props?.style,
                 {
                     borderColor: error ? Colors.SECOND : Colors.SOFTGRAY,
                 }
 
             ]}
             />
-            {error && <Text style={styles.error}>{error}</Text>}
+            <Text style={styles.error}>{error}</Text>
         </View>
     )
 }

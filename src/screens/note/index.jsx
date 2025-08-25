@@ -1,13 +1,43 @@
 import { View, Text, StyleSheet, SafeAreaView, ActivityIndicator, FlatList } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { defaultScreenStyle } from '../../styles/screenStyle'
 import { Colors } from '../../theme/colors';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { createNote, getAllNotes } from '../../redux/slices/noteSlice';
+import NoteItem from '../../components/ui/NoteItem';
+import ListEmptyComponent from '../../components/notes/ListEmptyComponent';
+import { useFocusEffect } from '@react-navigation/native';
 
 const NoteList = () => {
   const pending = false;
+  const dispatch = useDispatch();
 
   const { notes } = useSelector((state) => state.note);
+  const { user } = useSelector((state) => state.auth);
+
+
+
+ useFocusEffect(
+    React.useCallback(() => {
+      const fonksiyon = async () => {
+        try {
+          await dispatch(getAllNotes({ userid: user.id }))
+        }
+        catch (err) {
+          console.error(err);
+        }
+
+        console.log("fonksiyon çalıştı")
+      }
+
+      fonksiyon();
+    }, [user.id, dispatch])
+  );
+
+
+  
+
+
   return (
     
     <SafeAreaView style={defaultScreenStyle.safeContainer}>
@@ -20,14 +50,12 @@ const NoteList = () => {
           )
           :(
             <FlatList
+            numColumns={2}
             data={notes}
-            renderItem={({ item,index }) => 
-            <View key={index}>
-              <Text style={{fontSize:25}}>{item.title}</Text>
-              <Text style={{fontSize:15}}>{item.text}</Text>
-            </View>
-          }
+            renderItem={({ item,index }) => <NoteItem note={item}/>}
+            ListEmptyComponent={<ListEmptyComponent />}
             />
+            
           )
         }
       </View>
