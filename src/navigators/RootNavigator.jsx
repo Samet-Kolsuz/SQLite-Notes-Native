@@ -11,6 +11,7 @@ import NoteList from '../screens/note'
 import NoteDetail from '../screens/note/detail'
 import AddNote from '../screens/note/add'
 import { Add, ProfileCircle, SearchNormal } from 'iconsax-react-nativejs'
+import Profile from '../screens/profile'
 
 
 const Stack = createNativeStackNavigator()
@@ -52,6 +53,7 @@ const RootNavigator = () => {
               })} />
             <Stack.Screen name={NOTEDETAIL} component={NoteDetail} />
             <Stack.Screen name={ADDNOTE} component={AddNote} />
+            <Stack.Screen name={PROFILE} component={Profile} />
           </Stack.Group>
 
           :
