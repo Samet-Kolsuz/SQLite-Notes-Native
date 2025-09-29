@@ -3,10 +3,10 @@ import React, { useEffect } from 'react'
 import { defaultScreenStyle } from '../../styles/screenStyle'
 import { Colors } from '../../theme/colors';
 import { useDispatch, useSelector } from 'react-redux';
-import { createNote, getAllNotes } from '../../redux/slices/noteActions';
 import NoteItem from '../../components/ui/NoteItem';
 import ListEmptyComponent from '../../components/notes/ListEmptyComponent';
 import { useFocusEffect } from '@react-navigation/native';
+import { getAllNotes } from '../../redux/actions/noteActions';
 
 const NoteList = () => {
   const pending = false;
