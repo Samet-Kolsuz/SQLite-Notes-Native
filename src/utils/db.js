@@ -255,3 +255,34 @@ export const updateNoteFromDb = async ({ noteId, title, description, userid }) =
     })
 
 }
+
+export const updateUserFromDb= async ({ username,  password, location,id}) =>{
+  return new Promise((resolve,reject)=>{
+
+    db.transaction(tx=>{
+      tx.executeSql(
+        'UPDATE Users SET username = ?, password = ?, location = ? WHERE id = ?',[username,password,location,id],
+        (tx,results)=>{
+          if(results.rowsAffected > 0){
+
+            tx.executeSql(
+              'SELECT * FROM Users WHERE id =?',[id],
+              (_,results)=>{
+                resolve({success:true,message:"Kullanıcı başarıyla güncellendi",data:results.rows.item(0)});
+              },
+              (_,error)=>{
+                reject(error);
+              }
+            )
+            
+          }else{
+            reject({success:false,message:"Kullanıcı bulunamadı"});
+          }
+        },(_,error)=>{
+          reject(error);
+        }
+      )
+    });
+
+  })
+}

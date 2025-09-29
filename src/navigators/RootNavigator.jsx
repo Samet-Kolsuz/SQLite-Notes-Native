@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import GetStarted from '../screens/getStarted'
 import Register from '../screens/auth/register'
 import Login from '../screens/auth/login'
-import { ADDNOTE, GETSTARTED, LOGIN, NOTEDETAIL, NOTELIST, PREMIUM, PROFILE, REGISTER } from '../utils/routes'
+import { ADDNOTE, EDITPROFILE, GETSTARTED, LOGIN, NOTEDETAIL, NOTELIST, PREMIUM, PROFILE, REGISTER } from '../utils/routes'
 import { Colors } from '../theme/colors'
 import { useSelector } from 'react-redux'
 import NoteList from '../screens/note'
@@ -13,6 +13,7 @@ import AddNote from '../screens/note/add'
 import { Add, ProfileCircle, SearchNormal } from 'iconsax-react-nativejs'
 import Profile from '../screens/profile'
 import Premium from '../screens/profile/premium'
+import ProfileEdit from '../screens/profile/edit'
 
 
 const Stack = createNativeStackNavigator()
@@ -55,6 +56,7 @@ const RootNavigator = () => {
             <Stack.Screen name={NOTEDETAIL} component={NoteDetail} />
             <Stack.Screen name={ADDNOTE} component={AddNote} />
             <Stack.Screen name={PROFILE} component={Profile} />
+            <Stack.Screen name={EDITPROFILE} component={ProfileEdit} />
             <Stack.Screen name={PREMIUM} component={Premium} />
           </Stack.Group>
 

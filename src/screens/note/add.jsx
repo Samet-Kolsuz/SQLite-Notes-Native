@@ -8,7 +8,8 @@ import Button from '../../components/ui/Button'
 import { screenHeight, screenWidth } from '../../utils/constants'
 import { Colors } from '../../theme/colors'
 import Input from '../../components/ui/Input'
-import { createNote, getAllNotes } from '../../redux/slices/noteSlice'
+import { createNote, getAllNotes } from '../../redux/slices/noteActions'
+
 
 const AddNote = ({navigation}) => {
 

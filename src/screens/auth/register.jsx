@@ -38,10 +38,10 @@ const Register = () => {
           </View>
           <Formik
             initialValues={{
-              username: 'samet kolsuz',
-              password: '12345678',
-              email: 'smt14@gmail.com',
-              location: 'Istanbul'
+              username: '',
+              password: '',
+              email: '',
+              location: ''
             }}
             validationSchema={RegisterSchema}
             onSubmit={async(values) => {

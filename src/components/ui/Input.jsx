@@ -15,6 +15,7 @@ const Input = (props) => {
             style={[styles.input, props?.style,
                 {
                     borderColor: error ? Colors.SECOND : Colors.SOFTGRAY,
+                    color: editable ? Colors.BLACK : Colors.SOFTGRAY
                 }
 
             ]}

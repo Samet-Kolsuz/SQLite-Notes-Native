@@ -1,15 +1,21 @@
 import { Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { defaultScreenStyle } from '../../styles/screenStyle'
 import { screenHeight, screenWidth } from '../../utils/constants'
-import { useSelector } from 'react-redux'
-import { ArrowRight, ArrowRight2, Award, Key, Logout, Magicpen, NotificationBing, VideoPlay } from 'iconsax-react-nativejs'
+import { useDispatch, useSelector } from 'react-redux'
+import { ArrowRight, ArrowRight2, Award, Key, Logout, LogoutCurve, Magicpen, NotificationBing, VideoPlay } from 'iconsax-react-nativejs'
 import { Colors } from '../../theme/colors'
 import { EDITPROFILE, PREMIUM } from '../../utils/routes'
 import MenuItem from '../../components/ui/MenuItem'
+import { logOut } from '../../redux/slices/authSlice'
+import CustomModal from '../../components/ui/CustomModal'
+import Button from '../../components/ui/Button'
 
 const Profile = ({navigation}) => {
   const {user} = useSelector(state => state.auth)
+  const [modalVisible, setModalVisible] =useState(false);
+  const dispatch = useDispatch();
+
   const profileMenu=[
     {
       id:1,
@@ -20,7 +26,7 @@ const Profile = ({navigation}) => {
       {
       id:2,
       icon: <Magicpen size={24} color={Colors.SECOND} />,
-      title:"edit profile",
+      title:"Edit Profile",
       onPress: () => navigation.navigate(EDITPROFILE)
     },
      {
@@ -37,7 +43,7 @@ const Profile = ({navigation}) => {
       id:5,
       icon: <Logout size={24} color={Colors.SECOND} />,
       title:"Log Out",
-      onPress: ()=>{}
+      onPress: () => setModalVisible(true)
     }
   ]
   return (
@@ -45,7 +51,22 @@ const Profile = ({navigation}) => {
       <View style={defaultScreenStyle.container}>
         <ScrollView>
           <View style={styles.infoContainer}>
-            <Image 
+
+            {/* custom modal */}
+            <CustomModal
+            icon={<LogoutCurve size={80} color={Colors.SECOND}  />}
+            title="Are you sure you want to log out?"
+            description="You will need to enter your credentials to log back in."
+            modalVisible={modalVisible}
+            closeButton={
+              <Button title="Cancel" onPress={() => setModalVisible(false)} style={styles.closeButton} textStyle={styles.closeText}/>
+            }
+            successButton={
+              <Button title="Log Out" onPress={() => {dispatch(logOut())}} style={styles.successButton} textStyle={styles.successText}/>
+            }
+            />
+
+            <Image
             source={require('../../assets/images/image3.png')}
             style={styles.image}
             />
@@ -88,5 +109,13 @@ const styles = StyleSheet.create({
   location:{
     fontSize:16,
     marginTop:5,
+  },
+  closeButton:{
+    backgroundColor: "white",
+    borderWidth:3,
+    borderColor: Colors.SECOND,
+  },
+  closeText:{
+    color: Colors.SECOND,
   }
 })

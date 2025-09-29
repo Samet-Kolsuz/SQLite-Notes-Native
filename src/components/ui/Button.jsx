@@ -9,8 +9,8 @@ const Button = (props) => {
     <TouchableOpacity 
     disabled={disabled} 
     {...props} 
-    style={[styles.container,{backgroundColor: disabled ? Colors.SOFTGRAY : Colors.SECOND}]}>
-        <Text style={styles.title}>{title}</Text>
+    style={[styles.container,{backgroundColor: disabled ? Colors.SOFTGRAY : Colors.SECOND}, props.style]}>
+        <Text style={[styles.title, props.textStyle]}>{title}</Text>
     </TouchableOpacity>
   )
 }

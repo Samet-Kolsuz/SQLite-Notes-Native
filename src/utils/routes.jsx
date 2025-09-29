@@ -6,4 +6,5 @@ export const NOTEDETAIL = 'NOTEDETAIL';
 export const ADDNOTE = 'ADDNOTE';
 export const PROFILE = 'PROFILE';
 export const PREMIUM = 'PREMIUM';
+export const PROFILEEDIT = 'PROFILEEDIT';
 export const EDITPROFILE = 'EDITPROFILE';

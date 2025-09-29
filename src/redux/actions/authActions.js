@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getUserFromDb, insertUserInfoNotExists, LoginFromDb } from '../../utils/db';
+import { getUserFromDb, insertUserInfoNotExists, LoginFromDb, updateUserFromDb } from '../../utils/db';
 
 
 export const createUser = createAsyncThunk(
@@ -25,6 +25,21 @@ export const loginUser = createAsyncThunk(
       return response;
     } catch (error) {
       return rejectWithValue(error);
+    }
+  }
+)
+
+export const UpdateUser = createAsyncThunk(
+  'auth/UpdateUser',
+  async({username, password,location, id},{rejectWithValue})=>{
+    try{
+      const response = await updateUserFromDb({username, password,location, id})
+      return response.data;
+
+    }
+    catch(error){
+      console.log(error);
+       rejectWithValue(error);
     }
   }
 )

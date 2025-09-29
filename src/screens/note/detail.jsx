@@ -4,7 +4,8 @@ import { defaultScreenStyle } from '../../styles/screenStyle';
 import { screenHeight, screenWidth } from '../../utils/constants';
 import Button from '../../components/ui/Button';
 import { useDispatch } from 'react-redux';
-import { deleteNote, updateNote } from '../../redux/slices/noteSlice';
+import { deleteNote, updateNote } from '../../redux/actions/noteActions';
+
 
 const NoteDetail = ({ route, navigation }) => {
     const { note } = route.params;
